@@ -261,13 +261,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'LOGIN',
 
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute:'/',
-      routes: {
+      initialRoute:'/',//home route is login
+      routes: { //different routes
         '/list':(_)=>const Lists(),
         '/':(_)=>const LoginPage(),
       },
@@ -282,7 +282,6 @@ class Lists extends StatefulWidget {
 }
 
 class _ListState extends State<Lists> {
-  // This widget is the root of your application.
   late TextEditingController inputcontrol;
   late FocusNode inputfocus;
   // ignore: non_constant_identifier_names
@@ -302,7 +301,7 @@ class _ListState extends State<Lists> {
     loadSharedPreferencesAndData();
   }
 
-  void loadSharedPreferencesAndData() async {
+  void loadSharedPreferencesAndData() async { //initialize shared preference to use local storage
     sharedPreferences = await SharedPreferences.getInstance();
     loadData();
   }
@@ -318,7 +317,7 @@ class _ListState extends State<Lists> {
         home: SafeArea(
             child: Scaffold(
               appBar: AppBar(
-                actions: [
+                actions: [ //creating elevated button for logging out
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
@@ -382,7 +381,7 @@ class _ListState extends State<Lists> {
             )));
   }
 
-  Widget emptyList() {
+  Widget emptyList() { //display text when no entries are there
     return const Center(child: Text('No items'));
   }
 
@@ -396,7 +395,7 @@ class _ListState extends State<Lists> {
   }
 
   Widget buildItem(String item) {
-    return Dismissible(
+    return Dismissible( //it allows deleting by sliding the cards
       key: Key('${item.hashCode}'),
       background: Container(
         color: Colors.red[700],
@@ -435,7 +434,7 @@ class _ListState extends State<Lists> {
     );
   }
 
-  void addData(TextEditingController cnt) {
+  void addData(TextEditingController cnt) { //function to add data and save it in local storage
     setState(() {
       list.insert(0, cnt.text);
       saveData();
@@ -444,22 +443,21 @@ class _ListState extends State<Lists> {
     });
   }
 
-  void removeData(String itm) {
+  void removeData(String itm) { //function to delete data from local storage
     list.remove(itm);
     saveData();
   }
 
-  void loadData() {
+  void loadData() { //function to load the data from local storage
     setState(() {
       list = sharedPreferences.getStringList('list')!;
     });
   }
 
-  void saveData() {
+  void saveData() {//function to save the data in local storage
     setState(() {
       sharedPreferences.setStringList('list', list);
     });
-    //sharedPreferences.setStringList('list', list);
   }
 }
 
@@ -480,7 +478,7 @@ class LoginPageState extends State<LoginPage> {
 
 
 
-  void validateLogin() {
+  void validateLogin() { //to validate the user
     if (username.text == 'gajendra' && password.text == 'gaja@123') {
       Navigator.of(context).pushReplacementNamed(
         '/list',
